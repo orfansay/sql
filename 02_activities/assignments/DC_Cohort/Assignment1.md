@@ -106,6 +106,8 @@ Please do not pick the exact same tables that I have already diagrammed. For exa
 	- <img src="./images/01_farmers_market_conceptual_model.png" width="600">
 - The column names can be found in a few spots (DB Schema window in the bottom right, the Database Structure tab in the main window by expanding each table entry, at the top of the Browse Data tab in the main window)
 
+https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=Logical_data_model.drawio&dark=auto#R%3Cmxfile%3E%3Cdiagram%20name%3D%22Page-1%22%20id%3D%22GVgULpFdwEyrME__LbBn%22%3E7VhLb9s4EP4tPQjoHgzoETv2sXHS7qJoGzTF9mgwIi0RoUiFpCJ7f%2F0ORdKSLMdW3GaBLXqwJc0MPw7n8ZFSkCyLzQeJyvyTwIQFcYg3QXIdxPFlnMC%2FEWytYDYLrSCTFFtR1Aru6D%2FECb1ZRTFRPUMtBNO07AtTwTlJdU%2BGpBR132wtWH%2FWEmVkILhLERtKv1OscyudT8NW%2FiehWe5njkKnKZA3dgKVIyzqjii5CZKlFELbu2KzJMzEzsfFjnv%2FjHbnmCRcjxlw%2FeXT9%2Bu%2Fv92pL9fk89e%2F3ovbx4%2BTKBzCOGSltz4ImmxAd1XnVJO7EqVGXEO6QZbrgsFTBLd22BNilRsWxDNmxqkS8R7g7LEyq75KYVY9SQUTMkjegYnM7t%2BCR0u49Zc%2FGuRwlNFacD1Zo4KyrTWd1OT%2BgeqJ0ohjJHHHzHljrLiQBWId3ROSFME1RabKDprULulGeQF%2BNBpGtCZyAutNKc%2BGI4Usc8QdZGxlJrYTxGjGrRhclbqjohw3mTG6sNx0NFoC1hrg%2FUScWG2Tp8aLAwusKW6aouNCLSTuO72byAewmVBpKR7IpLZ9MHQIk1RIpKng%2Bx6tmUB6X4ipKhlymaKcUVDE4RtalEJCvmwQfKnAXeauTU2ZJBysKZvchkeaJV44FwdAN3EwnweLG48InWNB%2BxOB2NavFzdFTiSsuNMuruU%2BEFEQLbdgkndY4cJ1Wd0yyKUTOZDkcmGfHU3GM8ebyPFXtkNuWxxuXJe%2FpOP7hInufZOPYoJMiqo80OhnBGVH8Z2oTKN%2BWBZhLyrRPHylqFyMD8rRqP53oYoWrxWLAzvLsZh1lnxig0CqtFv0mm4IPrRjLCulYRXSNx%2BmT77xUqdaralUesVRQTot2jE8NpahdigqjHv8XpX9bh8JVQpgarZK4cAzFuyMzO%2ByfCjzniteqxDiswtB1bRgqCH6Zj9z57rwmVNCECeR0bXpP6dJXtgjDu2r6XeeMbIHlwzhFn1ymk%2BPkxNicBjgSJMrUXGsBunYreP8DE3%2Fv7TlN75Xq97ZyBhMfz6N3VYyzZEiK3DwCIW02pO0U0qBq1S%2FZMhjBWcoqrfnUx0w3KrlO%2Fg9NmjjRhdIPhC9wlD%2FvwofXp5dUT%2FIh6vSFdRvYhyZKneaJnjwdv9yRiQcvzNfEuAphQOEommfD6RZhSGC5%2FJ5KkH%2BY4IkDN6envoed0%2FHp5N2K2jzXrQ53BpRtAehBFQWcaO6Hw%2F2gHY0%2FRwQVHVG9ADodD7hsf0GYs3bD0nJzb8%3D%3C%2Fdiagram%3E%3C%2Fmxfile%3E
+
 ***
 
 ## Section 2:
@@ -123,6 +125,14 @@ Steps to complete this part of the assignment:
 1. Write a query that returns everything in the customer table.
 2. Write a query that displays all of the columns and 10 rows from the customer table, sorted by customer_last_name, then customer_first_ name.
 
+SELECT *
+FROM customer;
+
+SELECT *
+FROM customer
+ORDER BY customer_last_name, customer_first_name
+LIMIT 10;
+
 <div align="center">-</div>
 
 #### WHERE
@@ -132,17 +142,52 @@ Steps to complete this part of the assignment:
 	2.  one condition using BETWEEN
 Limit to 25 rows of output.
 
+SELECT *
+FROM customer_purchases
+WHERE product_id IN (4, 9);
+
+SELECT *,
+       quantity * cost_to_customer_per_qty AS price
+FROM customer_purchases
+WHERE customer_id BETWEEN 8 AND 10
+LIMIT 25;
+
 <div align="center">-</div>
 
 #### CASE
 1. Products can be sold by the individual unit or by bulk measures like lbs. or oz. Using the product table, write a query that outputs the `product_id` and `product_name` columns and add a column called `prod_qty_type_condensed` that displays the word “unit” if the `product_qty_type` is “unit,” and otherwise displays the word “bulk.”
 
+SELECT product_id,
+    product_name,
+    CASE 
+        WHEN product_qty_type = 'unit' THEN 'unit'
+        ELSE 'bulk'
+    END AS prod_qty_type_condensed
+FROM product;
+
 2. We want to flag all of the different types of pepper products that are sold at the market. Add a column to the previous query called `pepper_flag` that outputs a 1 if the product_name contains the word “pepper” (regardless of capitalization), and otherwise outputs 0.
+SELECT product_id,
+    product_name,
+    CASE 
+        WHEN product_qty_type = 'unit' THEN 'unit'
+        ELSE 'bulk'
+    END AS prod_qty_type_condensed,
+    CASE 
+        WHEN LOWER(product_name) LIKE '%pepper%' THEN 1
+        ELSE 0
+    END AS pepper_flag
+FROM product;
 
 <div align="center">-</div>
 
 #### JOIN
 1. Write a query that `INNER JOIN`s the `vendor` table to the `vendor_booth_assignments` table on the `vendor_id` field they both have in common, and sorts the result by `market_date` then `vendor_name`. Limit to 24 rows of output. 
+SELECT *
+FROM vendor
+INNER JOIN vendor_booth_assignments
+    ON vendor.vendor_id = vendor_booth_assignments.vendor_id
+ORDER BY market_date, vendor_name
+LIMIT 24;
 
 ***
 
@@ -159,7 +204,23 @@ Steps to complete this part of the assignment:
 
 #### AGGREGATE
 1. Write a query that determines how many times each vendor has rented a booth at the farmer’s market by counting the vendor booth assignments per `vendor_id`.
+SELECT vendor_id,
+       COUNT(*) AS booth_rental_count
+FROM vendor_booth_assignments
+GROUP BY vendor_id;
 2. The Farmer’s Market Customer Appreciation Committee wants to give a bumper sticker to everyone who has ever spent more than $2000 at the market. Write a query that generates a list of customers for them to give stickers to, sorted by last name, then first name.
+
+SELECT c.customer_id,
+    c.customer_first_name,
+    c.customer_last_name,
+    SUM(cp.quantity * cp.cost_to_customer_per_qty) AS total_spent
+FROM customer 
+INNER JOIN customer_purchases 
+    ON c.customer_id = cp.customer_id
+GROUP BY c.customer_id, c.customer_first_name, c.customer_last_name
+HAVING sum(cp.quantity * cp.cost_to_customer_per_qty) > 2000
+ORDER BY c.customer_last_name, c.customer_first_name;
+
    
 **HINT**: This query requires you to join two tables, use an aggregate function, and use the HAVING keyword.
 
