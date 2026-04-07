@@ -1,5 +1,4 @@
--- The link to my logical model
--- https://drive.google.com/file/d/17W2wzyaCDfYLfd3gDIqr84WZObpqm_LK/view?usp=sharing
+-- The link to my logical model -> https://drive.google.com/file/d/17W2wzyaCDfYLfd3gDIqr84WZObpqm_LK/view?usp=sharing
 
 
 /* ASSIGNMENT 2 */
