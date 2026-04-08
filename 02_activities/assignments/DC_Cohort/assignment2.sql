@@ -272,5 +272,14 @@ WHERE pu.product_id IS NOT NULL;
 
 --END QUERY
 
+-- link to my take on the article -> https://utoronto-my.sharepoint.com/:w:/g/personal/sayeed_orfan_mail_utoronto_ca/IQAH1iWuPe5vR4uisj7qBQHyAacMOCZeL5hNT0iu6UuiGVM?e=I5pK8a
+
+
+
+
+
+
+
+
 
 
